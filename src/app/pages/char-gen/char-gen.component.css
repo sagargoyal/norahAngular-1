@@ -297,7 +297,6 @@ position: absolute;
 	min-height:250px;
 }
 .an-head-details-horizontal{
-
 }
 .an-head-details-horizontal .head-detail-block{
 	overflow-y: hidden; 
@@ -464,4 +463,7 @@ width:25%;
     text-decoration: none;
     color: #fff;
     background-color: #008aff;
+}
+.shuffle-btn{
+	cursor: pointer;
 }
