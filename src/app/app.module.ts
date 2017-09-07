@@ -45,7 +45,7 @@ const SWIPER_CONFIG: SwiperConfigInterface = {
 
 };
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-    suppressScrollX: true,
+    suppressScrollX: false,
 };
 
 

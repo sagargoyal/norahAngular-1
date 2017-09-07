@@ -1,5 +1,5 @@
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Component, OnInit, OnChanges, SimpleChange, SimpleChanges, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChange, SimpleChanges, AfterViewInit, HostListener, trigger, state, animate, transition, style, ViewEncapsulation } from '@angular/core';
 import { NgForm, FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { Http,Headers } from '@angular/http';
 
@@ -27,6 +27,7 @@ declare var jQuery: any;
   selector: 'app-char-gen',
   templateUrl: './char-gen.component.html',
   styleUrls: ['./char-gen.component.css'],
+ // encapsulation: ViewEncapsulation.None,
   providers: [SocketService]
 })
 
@@ -146,16 +147,17 @@ export class CharGenComponent implements OnInit,OnChanges,AfterViewInit {
   public config: SwiperConfigInterface = {
     scrollbar: '.swiper-scrollbar',
     direction: 'horizontal',
-    slidesPerView: 5,
+    slidesPerView: 'auto',
     scrollbarHide: false,
     keyboardControl: true,
     mousewheelControl: true,
     scrollbarDraggable: true,
     scrollbarSnapOnRelease: true,
-    pagination: null,
+    pagination: null,//'.swiper-pagination',
     paginationClickable: true,
     nextButton: null,//.swiper-button-next',
-    prevButton: null//'.swiper-button-prev'
+    prevButton: null,//'.swiper-button-prev'
+    spaceBetween: 15,
   };
 
   constructor(

@@ -1,4 +1,5 @@
 @import '~perfect-scrollbar/dist/css/perfect-scrollbar.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.0/css/swiper.min.css';
 .collapse {
 	display: none
 }
@@ -198,6 +199,7 @@ position: absolute;
 }
 .an-RSidebar{
     width: 200px !important;
+    min-width: 200px;
     padding-top: 0 !important;
     position: relative !important;
     z-index: unset !important;
@@ -224,7 +226,6 @@ position: absolute;
 }
 
 .an-head-details-scrollable{
-	min-height: 400px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	height: calc( 100vh - 330px); 
@@ -233,6 +234,12 @@ position: absolute;
 	position: absolute;
 	top: 0px;
 	width: 100%;
+}
+.an-head-details-scrollable .head-detail-block .block:last-child{
+	margin-bottom: 30px;
+}
+.vertical-scroll-padding{
+	padding: 10px 0 30px 0;
 }
 .an-head-details-vertical .block_img{
 	height: 100% !important;
@@ -297,21 +304,78 @@ position: absolute;
 	min-height:250px;
 }
 .an-head-details-horizontal{
+	float: left;
+	margin-top: 10px;
+	width: 100%;
+
 }
 .an-head-details-horizontal .head-detail-block{
 	overflow-y: hidden; 
 	height: 160px;
 }
+.an-head-details-horizontal .head-detail{
+	width: 100%;
+}
 .an-head-details-horizontal .scroller-content{
 	max-width: unset;
 	width: 100%;
+	white-space: nowrap;
 }
 .an-head-details-horizontal .block{
     width: 183px !important;
     height: 153px !important;
     background-color: rgb(28,37,47);
+    margin-bottom: 0px;
+}
+.an-horizonatal-scrollbar{
+	overflow-x: scroll;
+	height: 200px;
+	width: calc( 80vw - 440px);
 }
 
+:host /deep/.ps__scrollbar-y-rail{
+	
+}
+.horizontal-details .head-detail .an-ham-button-div{
+	float: right;
+	position: relative;
+	top: 0px !important;
+}
+:host /deep/ .ps>.ps__scrollbar-y-rail>.ps__scrollbar-y{
+	background-color: #008aff !important;
+}
+:host /deep/ .ps>.ps__scrollbar-y-rail{
+	background-color: transparent !important;
+}
+:host /deep/ .an-head-details-vertical .ps__scrollbar-x-rail{
+	visibility: hidden;
+}
+:host /deep/ .an-horizonatal-scrollbar .swiper-scrollbar-drag{
+	background-color: #008aff !important;
+}
+.horizontal-details .head-detail .an-ham-button-div .btn{
+	border: none;
+	padding: 6px 6px;
+	float: right;
+}
+.horizontal-details .head-detail h3{
+	color: #fff;
+	font-size: 14px;
+	margin: 0;
+	margin-top: 9px;
+	margin-left: 10px;
+	font-weight: normal;
+}
+
+.an-horizonatal-scrollbar .scroller-content{
+	height: 162px;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	white-space: nowrap;
+}
+.an-horizonatal-scrollbar .ps{
+	overflow-x: scroll !important;
+}
 .an-dna-height-strecher .block-object> .an-display-flex{
 	height: calc( 100vh - 240px);
 }
@@ -320,9 +384,12 @@ position: absolute;
     justify-items: center;
     align-items: center;
 }
-
-
-
+.horizontal-details h3{
+	display: inline-block;
+}
+.horizontal-details .an-ham-button-div{
+	display: inline-block;
+}
 
 @media screen and (max-width: 720px) {
  
@@ -338,7 +405,7 @@ width:25%;
  
 .object-container-dna .block-object img{
 	padding:0px;
-width:25%;
+	width:25%;
 }
 
 }
@@ -402,28 +469,6 @@ width:25%;
 
 /* Scroll Bar */
 
-
-#style-5::-webkit-scrollbar-track{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	    background-color: rgba(0,0,0,0.2);
-}
-
-#style-5::-webkit-scrollbar{
-	width: 6px;
-
-	display: unset !important;
-	-webkit-appearance: unset !important;
-}
-
-#style-5::-webkit-scrollbar-thumb{
-	background-color: #0ae;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%,
-	                   color-stop(.5, rgba(255, 255, 255, .2)),
-					   color-stop(.5, transparent), to(transparent));
-}
-
-/* Scroll Bar */
-
 .an-head-details-vertical ul.dropdown-menu {
 	top: unset !important;
 	bottom: unset !important;
@@ -467,3 +512,4 @@ width:25%;
 .shuffle-btn{
 	cursor: pointer;
 }
+
