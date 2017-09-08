@@ -164,7 +164,7 @@
         </div>
         <div class="block block-object ">
           <span class="helper"></span>
-          <div class="an-display-flex">
+          <div class="an-display-flex overflow-scroll">
             <div class="an-main-img" *ngIf="selectedImage1.file !== ''">
                 <img id="dnaCode_main_img"  src="{{selectedImage1.file}}" >
               
@@ -214,7 +214,7 @@
           </div>
 
         </div>
-        <div class="an-head-details-horizontal" ><!-- *ngIf="mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === ''" -->
+        <div class="an-head-details-horizontal" *ngIf="mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === ''">
         <div class="horizontal-details">
           <div class="head-detail">
             <h3> {{mergedFiles.title}} </h3>
@@ -229,13 +229,16 @@
           </div>
 
         </div>
-        <div class="scroll-container" >
+        <div class="scroll-container" style="float: left;" >
         <div class="an-horizonatal-scrollbar"  >
           <div class="">
               
-              <swiper class="" [config]="config" overlay-controls fxFlex> <!-- *ngIf="mergedFiles.id !== ''" -->
-                <div class="swiper-slide" *ngFor="let mFile of mergedFiles.files;let i=index"  style="display:inline-block;" (click)="imageSelected(i, 'M')" [class]="mFile.file == selectedImage2.file ? 'block active' : 'block'"  >
-                  <img  class="block_img swiper-slide-content" fxLayoutAlign="center center" src={{mFile.file}}/>
+              <swiper class="" [config]="config" overlay-controls fxFlex *ngIf="mergedFiles.id !== ''" >
+                <div class="swiper-slide" *ngFor="let mFile of mergedFiles.files;let i=index"  style="display:inline-block;" (click)="imageSelected(i, 'M')" [class]="mFile.file == selectedImage2.file ? 'block active swiper-slide' : 'block swiper-slide'"  >
+                  <div class="swiper-slide-content" fxLayoutAlign="center center ">
+                    <img  class="block_img"  src={{mFile.file}}/>
+                  </div>
+                  
                 </div>
               </swiper>
 

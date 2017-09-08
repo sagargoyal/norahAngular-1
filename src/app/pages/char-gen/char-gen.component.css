@@ -241,10 +241,20 @@ position: absolute;
 .vertical-scroll-padding{
 	padding: 10px 0 30px 0;
 }
-.an-head-details-vertical .block_img{
+.an-head-details-vertical .block_img{ 
 	height: 100% !important;
 	width: auto !important;
 	max-width: unset !important; 
+}
+.an-horizonatal-scrollbar .block_img{
+	height: 153px;
+	width: auto;
+}
+.an-horizonatal-scrollbar .swiper-slide-content{
+	width: 183px !important;
+}
+.overflow-scroll{
+	overflow: scroll;
 }
 .an-main-img{
 	flex: 1;
@@ -300,13 +310,15 @@ position: absolute;
 	top: 13px;
 }
 .object-container-dna .block-object{
-
+	padding: 0 4px;
 	min-height:250px;
 }
 .an-head-details-horizontal{
 	float: left;
 	margin-top: 10px;
 	width: 100%;
+	background-color: #253443;
+	border-radius: 2px;
 
 }
 .an-head-details-horizontal .head-detail-block{
@@ -315,7 +327,14 @@ position: absolute;
 }
 .an-head-details-horizontal .head-detail{
 	width: 100%;
+	margin-top: 0;
+	border-bottom: 1px solid rgba(255,255,255,0.1);
+
 }
+.scroll-container{
+	margin: 6px 0 4px 8px;
+}
+
 .an-head-details-horizontal .scroller-content{
 	max-width: unset;
 	width: 100%;
@@ -329,7 +348,7 @@ position: absolute;
 }
 .an-horizonatal-scrollbar{
 	overflow-x: scroll;
-	height: 200px;
+	height: 162px;
 	width: calc( 80vw - 440px);
 }
 
