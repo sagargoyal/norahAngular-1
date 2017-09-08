@@ -67,30 +67,26 @@
                                 <h3 class="text-center">
                                     Original Selections
                                 </h3>
-                                <div class="delete-selected" type="button" *ngIf="showDeleteSelected" (click)="deleteSelected()">Delete Selected</div>
+                                <div class="delete-selected" type="button" *ngIf="selectedImgs.length" (click)="deleteSelected()">Delete Selected</div>
 
                                 <section class="items clearfix" id="gen2-images">
-                                    <div class="col-md-3" *ngFor="let terrain of userTerrains | async; let i=i ndex">
-                                        <div class="item" (click)="selectImg($event, terrain)">
-                                            <label [for]="i">
-                        <i class="fa fa-check-circle-o fa-inverse" style="display: none;" aria-hidden="true"></i>
-                        <img [src]="terrain.url" alt="">
-                        <div class="overlay">
-                          <div class="item-row">
-                            <button style="position: absolute; left: 0; display: none;">
-                              <input class="imageSelection" [id]="i" type="checkbox" value="">
-                            </button>
-                            <button>
-                              <i class="fa fa-play" aria-hidden="true" (click)="openImage(terrain)"></i>
-                            </button>
-                          </div>
-                          <div class="item-row action-btn">
-                            <button (click)="deleteFromLibrary(terrain.key)">Delete</button>
-                          </div>
-                        </div>
-                      </label>
+                                  <div class="col-md-3" *ngFor="let terrain of userTerrains; let i = index">
+                                    <div class="item" [ngClass]="terrain.selected ? 'active-img' : ''">
+                                        <i class="fa fa-check-circle-o fa-inverse" *ngIf="terrain.selected"></i>
+                                        <img [src]="terrain.url" alt="">
+                                        <div class="overlay" (click)="selectImg(terrain)">
+                                          <div class="item-row">
+                                            <button>
+                                              <i class="fa fa-play" aria-hidden="true" (click)="openImage(terrain)"></i>
+                                            </button>
+                                          </div>
+
                                         </div>
+                                      <div class="item-row action-btn" (click)="deleteFromLibrary(terrain.key)">
+                                        <button>Delete</button>
+                                      </div>
                                     </div>
+                                  </div>
                                 </section>
                                 <div id="modalThree" class="modal">
                                     <div id="content" class="modal-content">

@@ -44,11 +44,8 @@ export class TerrainGenService {
   getTerrainsFromLibrary(type: string) {
     const terrainsArr = Observable.of([]);
     if (this.user) {
-      const terrainLibraryList = this.db.list(`/usernames/${this.user}/terrainGenLibrary`);
-      //console.log(terrainLibraryList);
-      return terrainLibraryList;
+      return this.db.list(`/usernames/${this.user}/terrainGenLibrary`);
     } else {
-      //console.log('SHIT HAPPENED');
       return Observable.of([]);
     }
   }
@@ -147,7 +144,7 @@ export class TerrainGenService {
     }
   }
 
-  removeTerrainsFromLibray(key){
+  removeTerrainsFromLibray(key) {
     const terrainLibraryList = this.db.list(`/usernames/${this.user}/terrainGenLibrary`);
     return terrainLibraryList.remove(key);
   }

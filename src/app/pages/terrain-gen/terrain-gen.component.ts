@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ViewEncapsulation, NgZone, OnInit,OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
 import { Headers, Http, RequestOptions, Response } from '@angular/http';
+import * as firebase from 'firebase';
 import { GlobalRef } from '../../global-ref';
 import { HeightMapSocketService } from './HeightMapSocketService';
 import { TerrainGenService } from './terrain-gen.service';
-import * as firebase from 'firebase';
 
 declare const $: any;
 declare const ValidateInputsThenApply: any;
@@ -14,13 +14,13 @@ declare const ValidateInputsThenApply: any;
   styleUrls: ['./terrain-gen.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TerrainGenComponent implements OnInit, AfterViewInit {
+export class TerrainGenComponent implements AfterViewInit {
 
   activeLink = 'canyons';
   isGenerate = true;
   isOpen = true;
   terrains: any;
-  userTerrains: any;
+  userTerrains: any = [];
   /* Received Data after clicking on button Upload */
   receivedData: any[] = [];
   showDeleteSelected = false;
@@ -30,17 +30,29 @@ export class TerrainGenComponent implements OnInit, AfterViewInit {
   constructor(private terrainService: TerrainGenService,
               private socket: HeightMapSocketService,
               private global: GlobalRef,
-              private http: Http,private ngZone:NgZone) {
-                window['angularComponentRef'] = {component: this, zone: ngZone};
-                // window['angularComponent'].zone.run(() => {
-                //   this.UnityLoadFinished();
-                // });
-  }
-  ngOnInit() {
-
-  }
-  ngOnDestroy() {
-
+              private http: Http) {
+    this.terrainService.getTerrainsFromLibrary(this.activeLink)
+      .subscribe((items) => {
+        const anims = items.map(file => {
+          //console.log(file.name);
+          return firebase
+            .storage()
+            .ref(`terrainImages/${file.type}/`)
+            .child(`${file.name}`)
+            .getDownloadURL()
+            .then((url) => {
+              return {
+                url: url,
+                key: file.$key,
+                selected: false
+              };
+            });
+        });
+        Promise.all(anims).then((terrains) => {
+          console.log(terrains);
+          this.userTerrains = terrains;
+        });
+    });
   }
   ngAfterViewInit() {
     let gameInstance;
@@ -55,7 +67,7 @@ export class TerrainGenComponent implements OnInit, AfterViewInit {
         $expand.text('▼');
       }
     });
-    this.selectTerrain(this.activeLink);
+    this.getTerrains(this.activeLink);
     const reciveData = this.terrainService.getReceivedData();
     if ( reciveData ) {
       this.receivedData = reciveData;
@@ -104,44 +116,7 @@ export class TerrainGenComponent implements OnInit, AfterViewInit {
     this.socket.emit('watch', { path: event.target.src });
   }
 
-  nextTerGan() {
-    this.terrainService.getTerrainsFromLibrary(this.activeLink)
-      .subscribe(items => {
-        const anims = items.map(file => {
-          return firebase
-            .storage()
-            .ref(`terrainImages/${file.type}/`)
-            .child(`${file.name}`)
-            .getDownloadURL();
-        });
-        this.userTerrains = Promise.all(anims);
-      });
-    // this.isGenerate = !this.isGenerate;
-    if ( this.isGenerate==false ) {
-      this.isGenerate = true;
-
-  }
-}
   generationButton() {
-    this.terrainService.getTerrainsFromLibrary(this.activeLink)
-      .subscribe(items => {
-        //console.log(items);
-        const anims = items.map(file => {
-          //console.log(file.name);
-          return firebase
-            .storage()
-            .ref(`terrainImages/${file.type}/`)
-            .child(`${file.name}`)
-            .getDownloadURL()
-            .then((url) => {
-              return {
-                url: url,
-                key: file.$key
-              };
-            });
-        });
-        this.userTerrains = Promise.all(anims);
-      });
     this.isGenerate = !this.isGenerate;
     //console.log("generation Button");
     //console.log(this.isGenerate);
@@ -150,29 +125,8 @@ export class TerrainGenComponent implements OnInit, AfterViewInit {
     this.isOpen = !this.isOpen;
 
   }
-
   deleteFromLibrary(terrain: string) {
-    this.terrainService.removeTerrainsFromLibray(terrain).then((res) => {
-      this.terrainService.getTerrainsFromLibrary(this.activeLink)
-        .subscribe(items => {
-          //console.log(items);
-          const anims = items.map(file => {
-            //console.log(file.name);
-            return firebase
-              .storage()
-              .ref(`terrainImages/${file.type}/`)
-              .child(`${file.name}`)
-              .getDownloadURL()
-              .then((url) => {
-                return {
-                  url: url,
-                  key: file.$key
-                };
-              });
-          });
-          this.userTerrains = Promise.all(anims);
-        });
-    });
+    this.terrainService.removeTerrainsFromLibray(terrain);
   }
 
   addToLibraryFromGeneration(receivedImg) {
@@ -326,49 +280,21 @@ export class TerrainGenComponent implements OnInit, AfterViewInit {
   }
 
 
-  selectImg(event, tera) {
-    const images = document.getElementsByClassName('item');
-    //for (let i = 0; i < images.length; i++) {
-    //if ( images[i].getElementsByTagName('input')[0] && images[i].getElementsByTagName('input')[0].checked) {
-    if ( event.currentTarget.getElementsByTagName('input')[0] && event.currentTarget.getElementsByTagName('input')[0].checked ) {
-      const test = event.currentTarget.getElementsByClassName('fa-check-circle-o');
-      test[0].style.display = test[0].style.display === 'none' ? '' : 'none';
-      event.currentTarget.getElementsByTagName('input')[0].checked = true;
-      //images[i].classList.toggle('active-img');
-      event.currentTarget.classList.toggle('active-img');
-    }
-
-    const images2 = document.getElementById('gen2-images').getElementsByClassName('item');
-    const selectedCount = 0;
-    this.showDeleteSelected = false;
-    for ( let i = 0; i < images2.length; i++ ) {
-      if ( images2[i].getElementsByTagName('input')[0] &&
-        images2[i].getElementsByTagName('input')[0].type === 'checkbox' &&
-        images2[i].getElementsByTagName('input')[0].checked ) {
-        this.showDeleteSelected = true;
-        this.selectedImgs.push(tera);
-      }
-    }
-
+  selectImg(terrain) {
+    terrain.selected = !terrain.selected;
+    this.selectedImgs = this.userTerrains.filter((ter) => ter.selected);
   }
 
   deleteSelected() {
-    this.terrainService.getTerrainsFromLibrary('mountains')
-      .subscribe(items => {
-        for ( const item of items ) {
-          for ( const selected of this.selectedImgs ) {
-            if ( (item as any ).type === 'mountains' && (item as any).name === selected.match(/%2F(.+)\?/)[1] ) {
-              this.terrainService.removeTerrainsFromLibray((item as any).$key);
-            }
-          }
-        }
-        this.selectedImgs = [];
-      });
+    console.log(this.selectedImgs);
+    this.selectedImgs.forEach((item) => {
+      this.terrainService.removeTerrainsFromLibray(item.$key);
+    });
   }
   selectTerrain(terrainsType: string) {
     this.activeLink = terrainsType;
     this.getTerrains(this.activeLink);
-    this.nextTerGan();
+    // this.generationButton();
   }
   getTerrains(type: string) {
     this.terrains = this.terrainService.getTerrains(type)
