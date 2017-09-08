@@ -11,7 +11,14 @@ div.rotate {
     border: #000000 1px solid;
     display: inline-block;
 }
-
+.selected {
+  border: 1px solid #008aff;
+  // background-image: url("/assets/images/icons8-Ok Filled.svg");
+  // background-repeat:no-repeat;
+}
+.unselected{
+  border: 1px solid #202A34;
+}
 
 .terrain-sidebar {
   padding: 0;
@@ -39,7 +46,9 @@ div.rotate {
     background-color: #105a9b;
   }
 }
-
+.checked-icon{
+  opacity: 1;
+}
 .terrain-detail {
   padding: 0;
   list-style: none;
