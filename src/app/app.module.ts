@@ -34,9 +34,18 @@ import { Blog1Component } from './pages/blog1/blog1.component';
 import { Blog2Component } from './pages/blog2/blog2.component';
 import { Blog3Component } from './pages/blog3/blog3.component';
 import { PerfectScrollbarModule, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { SwiperModule, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
+const SWIPER_CONFIG: SwiperConfigInterface = {
+    direction: 'horizontal',
+    threshold: 25,
+    slidesPerView: '1',
+    keyboardControl: false,
+    centeredSlides: false,
+
+};
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-    suppressScrollX: true,
+    suppressScrollX: false,
 };
 
 
@@ -72,7 +81,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GunInterpModule,
     ImageZoomModule,
     ReactiveFormsModule,
-    PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG)
+    PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
+    SwiperModule.forRoot(SWIPER_CONFIG),
   ],
   providers: [
     { provide: GlobalRef, useClass: BrowserGlobalRef },
