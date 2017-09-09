@@ -1,22 +1,22 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import * as $ from 'jquery';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { GlobalRef } from './global-ref';
-import { AuthService } from './pages/auth/auth.service';
-import { RepositoryService } from './pages/repository/repository.service';
-import { LibraryService } from './pages/library/library.service';
-import { Title } from '@angular/platform-browser';
-import { SeoService } from './seo.service';
-import { SEO_CONFIGURATION } from './seo.config';
+import { AfterViewInit, Component } from '@angular/core';
 import { dashCaseToCamelCase } from '@angular/platform-browser/src/dom/util';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { AuthService } from './pages/auth/auth.service';
+import { LibraryService } from './pages/library/library.service';
+import { RepositoryService } from './pages/repository/repository.service';
+import { SEO_CONFIGURATION } from './seo.config';
+import { SeoService } from './seo.service';
+
+declare const $: any;
+declare const jQuery: any;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
   tags = [];
   showFilters: boolean;
   updateIndex: boolean;
@@ -66,7 +66,10 @@ export class AppComponent implements OnInit {
   deleteSelected($event) {
     this.libService.removeAnimationEvent($event);
   }
-  ngOnInit() {
 
+  ngAfterViewInit() {
+    $(window).load(() => {
+      ($('.sf-menu') as any).superfish();
+    });
   }
 }
