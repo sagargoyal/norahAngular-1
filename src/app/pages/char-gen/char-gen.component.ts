@@ -169,7 +169,6 @@ export class CharGenComponent implements OnInit,OnChanges,AfterViewInit {
     private firebaseDb: AngularFireDatabase){
     const wnd = this.global.nativeGlobal;
     this.toastr = wnd.toastr;
-    console.log('hi constructor',this.selectedImage1.file === '' && this.selectedImage3.file === '');
 
     // this.getInput();
     // this.getOutput();
@@ -202,7 +201,8 @@ export class CharGenComponent implements OnInit,OnChanges,AfterViewInit {
     
     this.socket.on('files',(data) => {
       console.log("Socket Data Received: ");
-      console.log(data, data.generationName[0] === "G");
+
+      // console.log(data, data.generationName[0] === "G");
 
       //if(data.id==this.FileUploadId){
 
@@ -330,7 +330,6 @@ export class CharGenComponent implements OnInit,OnChanges,AfterViewInit {
   switchImage(id: string, pos: string) {
     if(pos === "G"){
       console.log("Switching image to:" +id);
-      console.log(this.processedFiles);
       this.changeHistoryG = this.changeHistoryG.map((gen) => {
         if(gen.id == id){
           gen.setActive();
@@ -343,11 +342,9 @@ export class CharGenComponent implements OnInit,OnChanges,AfterViewInit {
         }
         return gen;
       });
-      console.log(this.processedFiles);
     } else {
       if (pos === "M") {
         console.log("Switching image to:" +id);
-        console.log(this.mergedFiles);
         this.changeHistoryM = this.changeHistoryM.map((gen) => {
           if(gen.id == id){
             gen.setActive();
@@ -360,7 +357,6 @@ export class CharGenComponent implements OnInit,OnChanges,AfterViewInit {
           }
           return gen;
         });
-        console.log(this.mergedFiles);
       }
     }
   }
@@ -447,7 +443,6 @@ export class CharGenComponent implements OnInit,OnChanges,AfterViewInit {
   }
  
   imageSelected(index: number, pos: string){
-    console.log('check', this.selectedImage1.file, this.selectedImage2.file, this.selectedImage3.file);
     try {
       if (pos === "G" && this.processedFiles.files[index] !== '') { 
         this.selectedImage1 = Object.assign({}, this.processedFiles.files[index]);
@@ -703,7 +698,6 @@ export class CharGenComponent implements OnInit,OnChanges,AfterViewInit {
 
     try{
       this.selectedBodyPart = Object.assign({}, this.bodyParts.files[index]);
-      console.log(this.selectedBodyPart, this.bodyParts.files[index]);
       this.selectedImage3 = Object.assign({}, this.selectedBodyPart);
       this.input2Image = Object.assign({}, this.selectedImage3);
       if (this.selectedImage1.file === "" && this.selectedImage2.file !== "") {

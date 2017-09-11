@@ -273,6 +273,7 @@ position: absolute;
 }
 .an-align-center{
 	text-align: center;
+	font-size: 14px;
 }
 .an-dna-conatiner{
 	font-family:"Lato Semibold","Lato",sans-serif;
