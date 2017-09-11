@@ -13,7 +13,6 @@ import { AboutComponent } from './pages/about/about.component';
 import { AuthModule } from './pages/auth/auth.module';
 import { DialogService } from './pages/auth/dialog/dialog.component';
 import { CharMakerComponent } from './pages/char-maker/char-maker.component';
-import { DnaCodeComponent } from './pages/dna-code/dna-code.component';
 import { CharGenComponent } from './pages/char-gen/char-gen.component'; 
 import { ExportGameComponent } from './pages/export-game/export-game.component';
 import { GameMakerComponent } from './pages/game-maker/game-maker.component';
@@ -55,7 +54,6 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AboutComponent,
     ExportGameComponent,
     CharMakerComponent,
-    DnaCodeComponent,
     CharGenComponent,
     GameMakerComponent,
     SniperComponent,
