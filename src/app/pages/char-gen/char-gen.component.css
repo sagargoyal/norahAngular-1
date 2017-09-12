@@ -213,7 +213,9 @@ position: absolute;
 }
 .an-head-details-vertical{
 	position: relative;
+	
 	height: calc( 100vh - 90px);
+	
 	min-height: 500px;
 }
 .an-head-details-vertical .block{
@@ -258,9 +260,18 @@ position: absolute;
 }
 .an-main-img{
 	flex: 1;
+	/*
+	padding-bottom: 5px;
+
+	max-width: calc( 50% - 200px);
+*/
 }
 .an-main-img > img {
 	min-width: 280px;
+	/*
+	max-height: calc( 100% - 40px);
+    width: auto !important;
+*/
 }
 .an-main-img .addgame-btn{
 	float: unset !important;
@@ -312,7 +323,6 @@ position: absolute;
 }
 .object-container-dna .block-object{
 	padding: 0 4px;
-	min-height:250px;
 }
 .an-head-details-horizontal{
 	float: left;
@@ -397,13 +407,21 @@ position: absolute;
 	overflow-x: scroll !important;
 }
 .an-dna-height-strecher .block-object> .an-display-flex{
+	height: calc( 100vh - 350px) !important;
+
+}
+.an-dna-conatiner .block-object> .an-display-flex{
 	height: calc( 100vh - 240px);
+	justify-items: center;
+	justify-content: center;
+	position: relative;
 }
 
 .an-dna-conatiner .block-object> .an-display-flex{
     justify-items: center;
     align-items: center;
 }
+
 .horizontal-details h3{
 	display: inline-block;
 }
@@ -411,8 +429,18 @@ position: absolute;
 	display: inline-block;
 }
 
+@media screen and (max-height: 720px){
+	.an-dna-conatiner .block-object> .an-display-flex{
+    justify-items: center;
+    align-items: unset !important;
+	}
+}
 @media screen and (max-width: 720px) {
- 
+ .an-dna-conatiner .block-object> .an-display-flex{
+    justify-items: center;
+    align-items: center;
+}
+
 .object-container-dna .block-object img{
 	padding:0px;
 width:25%;

@@ -153,7 +153,7 @@
         </div>
       </div>
 
-      <div class="object-container-dna an-dna-conatiner" [ngClass]="{'an-dna-height-strecher': !(mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === '') }" >
+      <div class="object-container-dna an-dna-conatiner" [ngClass]="{'an-dna-height-strecher': (mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === '') }" >
         <div class="dna-code-title">
           <h2> DNA CODE </h2>
         </div>
@@ -164,7 +164,7 @@
           <span class="helper"></span>
           <div class="an-display-flex overflow-scroll">
             <div class="an-main-img" *ngIf="selectedImage1.file !== ''">
-              <img id="dnaCode_main_img"  src="{{selectedImage1.file}}" >
+              <img id="dnaCode_main_img"  [src]="selectedImage1.file" >
 
               <div class="an-btn-below-img clearfix">
                 <a href="javascript:void(0)" class="addgame-btn" (click)="exportFbx(true)"> Add to game </a>
@@ -172,7 +172,7 @@
               </div>
             </div>
             <div class="an-main-img" *ngIf="selectedImage2.file !== ''">
-              <img id="dnaCode_main_img"  src="{{selectedImage2.file}}"  >
+              <img id="dnaCode_main_img"  [src]="selectedImage2.file"  >
               
               <div class="an-btn-below-img clearfix">
                 <a href="javascript:void(0)" class="addgame-btn" (click)="exportFbx(true)"> Add to game </a>
@@ -180,7 +180,7 @@
               </div>
             </div>
             <div class="an-main-img" *ngIf="selectedImage3.file !== ''">
-              <img id="dnaCode_main_img"  src="{{selectedImage3.file}}"  >
+              <img id="dnaCode_main_img"  [src]="selectedImage3.file"  >
               
               <div class="an-btn-below-img clearfix">
                 <a href="javascript:void(0)" class="addgame-btn" (click)="exportFbx(true)"> Add to game </a>
@@ -188,8 +188,8 @@
               </div>
             </div>
           </div>
-          <div class="object-container-dna-btm ">
-            <div class=" an-display-flex " *ngIf="!(mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === '') && input1Image.file !== '' && input2Image.file !== ''">
+          <div class="object-container-dna-btm" *ngIf="!(mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === '') && input1Image.file !== '' && input2Image.file !== ''">
+            <div class=" an-display-flex">
               <!-- <a href="javascript:void(0)" class="addgame-btn" (click)="exportFbx(true)"> Add to game </a>
               <a style="cursor: not-allowed" class="addgame-btn" style="margin-left: 10px" (click)="exportFbx()"> Export fbx </a> -->
               <div class="shuffle-btn flex-1"> <!-- Change Button color to Primary -->
@@ -253,7 +253,7 @@
               </div>
             </div>
           </perfect-scrollbar>
-          <div class="an-selected-block-vertical clearfix">
+          <div class="an-selected-block-vertical">
             <div class="an-align-center">
                 Input 2
             </div>
