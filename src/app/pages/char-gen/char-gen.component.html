@@ -163,7 +163,7 @@
         <div class="block block-object ">
           <span class="helper"></span>
           <div class="an-display-flex overflow-scroll">
-            <div class="an-main-img" *ngIf="selectedImage1.file !== ''">
+            <div class="an-main-img" *ngIf="selectedImage1.file !== ''" [ngClass]="{'an-main-img-strecher': (mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === '') }">
               <img id="dnaCode_main_img"  [src]="selectedImage1.file" >
 
               <div class="an-btn-below-img clearfix">
@@ -171,7 +171,7 @@
                 <a style="cursor: not-allowed" class="addgame-btn" style="margin-left: 10px" (click)="exportFbx()"> Export fbx </a>
               </div>
             </div>
-            <div class="an-main-img" *ngIf="selectedImage2.file !== ''">
+            <div class="an-main-img" *ngIf="selectedImage2.file !== ''" [ngClass]="{'an-main-img-strecher': (mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === '') }">
               <img id="dnaCode_main_img"  [src]="selectedImage2.file"  >
               
               <div class="an-btn-below-img clearfix">
@@ -179,7 +179,7 @@
                 <a style="cursor: not-allowed" class="addgame-btn" style="margin-left: 10px" (click)="exportFbx()"> Export fbx </a>
               </div>
             </div>
-            <div class="an-main-img" *ngIf="selectedImage3.file !== ''">
+            <div class="an-main-img" *ngIf="selectedImage3.file !== ''" [ngClass]="{'an-main-img-strecher': (mergedFiles.id !== '' && selectedImage1.file === '' && selectedImage3.file === '') }">
               <img id="dnaCode_main_img"  [src]="selectedImage3.file"  >
               
               <div class="an-btn-below-img clearfix">

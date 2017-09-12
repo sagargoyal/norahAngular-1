@@ -213,10 +213,7 @@ position: absolute;
 }
 .an-head-details-vertical{
 	position: relative;
-	
 	height: calc( 100vh - 90px);
-	
-	min-height: 500px;
 }
 .an-head-details-vertical .block{
 	width: 183px !important;
@@ -260,14 +257,19 @@ position: absolute;
 }
 .an-main-img{
 	flex: 1;
-	/*
-	padding-bottom: 5px;
-
-	max-width: calc( 50% - 200px);
-*/
+	height: calc( 100vh - 280px);
+	max-width: 50%;
+	/* This needs to dynamically change when the panel comes below */
+}
+.an-main-img-strecher{
+	/*The div where main-img is present*/
+	height: calc( 100vh - 390px);
 }
 .an-main-img > img {
-	min-width: 280px;
+	max-height: 100%;
+	width: auto;
+	padding: 0 !important;
+	max-width: 100%;
 	/*
 	max-height: calc( 100% - 40px);
     width: auto !important;
@@ -412,6 +414,7 @@ position: absolute;
 }
 .an-dna-conatiner .block-object> .an-display-flex{
 	height: calc( 100vh - 240px);
+	width: calc( 79vw - 415px);
 	justify-items: center;
 	justify-content: center;
 	position: relative;
@@ -419,7 +422,6 @@ position: absolute;
 
 .an-dna-conatiner .block-object> .an-display-flex{
     justify-items: center;
-    align-items: center;
 }
 
 .horizontal-details h3{
@@ -441,20 +443,12 @@ position: absolute;
     align-items: center;
 }
 
-.object-container-dna .block-object img{
-	padding:0px;
-width:25%;
-}
 
 }
 
 
 @media screen and (min-width: 721px) {
- 
-.object-container-dna .block-object img{
-	padding:0px;
-	width:25%;
-}
+
 
 }
 
