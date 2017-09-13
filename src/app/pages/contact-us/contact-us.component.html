@@ -13,15 +13,15 @@
                 <strong>Name*</strong>
                 <input formControlName="name" type="text" name="name" placeholder="" value="" required/>
                 <span *ngIf="contactForm.controls.name.dirty && contactForm.controls.name.errors?.required"
-                      class="empty-message">*This field is required.</span>
+                      class="empty-message" style="color:#253443">*This field is required.</span>
               </label>
               <label class="email form-div-2">
                 <strong>E-mail*</strong>
                 <input formControlName="email" type="text" name="email" placeholder="" value="" email required/>
                 <span *ngIf="contactForm.controls.email.dirty && contactForm.controls.email.errors?.required"
-                      class="empty-message">*This field is required.</span>
+                      class="empty-message" style="color:#253443">*This field is required.</span>
                 <span *ngIf="contactForm.controls.email.dirty && contactForm.controls.email.errors?.email"
-                      class="error-message">*This is not a valid email.</span>
+                      class="error-message" style="color:#253443">*This is not a valid email.</span>
               </label>
               <label class="phone form-div-3">
                 <strong>Phone</strong>
@@ -32,14 +32,14 @@
                 <strong>Message*</strong>
                 <textarea formControlName="message" name="message" placeholder="" required minlength="15"></textarea>
                 <span *ngIf="contactForm.controls.name.dirty && contactForm.controls.message.errors?.required"
-                      class="empty-message">*This field is required.</span>
+                      class="empty-message" style="color:#253443">*This field is required.</span>
                 <span *ngIf="contactForm.controls.name.dirty && contactForm.controls.message.errors?.minlength"
-                      class="error-message">*The message is too short.</span>
+                      class="error-message" style="color:#253443">*The message is too short.</span>
               </label>
               <div class="btns">
-                <p>* required fields</p>
+                <p style="color:#253443">* required fields</p>
                 <button [disabled]="contactForm.invalid" href="#" data-type="submit"
-                        (click)="submitMessage()" class="btn-default btn4"><span></span>Submit
+                        (click)="submitMessage()" id="button-color"><span></span>Submit
                 </button>
               </div>
             </fieldset>

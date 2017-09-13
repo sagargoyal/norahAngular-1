@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Http } from '@angular/http';
+import { Http, RequestOptions, Headers, URLSearchParams} from '@angular/http'
 import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
 
 @Component({
@@ -25,7 +25,9 @@ export class ContactUsComponent {
   }
 
   submitMessage(): void {
-    this.http.post('http://norah.ai/bat/MailHandler.php', this.contactForm.value).subscribe(response => {
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
+        let options = new RequestOptions({ headers: headers });
+    this.http.post('https://norah.ai/bat/MailHandler.php', this.contactForm.value , options).subscribe((response) => {
       if (response.status === 200) {
         this.contactSuccessModal.show()
       }
