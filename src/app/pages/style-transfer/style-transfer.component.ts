@@ -266,39 +266,44 @@ export class StyleTransferComponent implements AfterViewInit {
     };
 
     function saveToFirebase() {
-      // Collect the values from form.
-      const objectToSave = {
-        name: $('#animation_name').val(),
-        blending_options: {
-          loop: $('input[name=\'Loop\']').is(':checked'),
-          timeStretch: $('input[name=\'TimeStretch\']').is(':checked'),
-          startOffs: $('input[name=\'StartOffs\']').val()
-        },
-        blending_tools: {
-          head: $('input[name=\'Head\']').val(),
-          trso: $('input[name=\'Trso\']').val(),
-          armL: $('input[name=\'ArmL\']').val(),
-          armR: $('input[name=\'ArmR\']').val(),
-          legL: $('input[name=\'LegL\']').val(),
-          legR: $('input[name=\'LegR\']').val(),
-          fing: $('input[name=\'Fing\']').val(),
-          root: $('input[name=\'Root\']').val()
-        }
-      };
+     var objectToSave = {
+                name: $("#animation_name").val(),
+                blending_options: {
+                    loop: jQuery("input[name='Loop']").is(":checked"),
+                    timeStretch: jQuery("input[name='TimeStretch']").is(":checked"),
+                    startOffs: jQuery("input[name='StartOffs']").val()
+                },
+                blending_tools: {
+                    head: jQuery("input[name='Head']").val(),
+                    trso: jQuery("input[name='Trso']").val(),
+                    armL: jQuery("input[name='ArmL']").val(),
+                    armR: jQuery("input[name='ArmR']").val(),
+                    legL: jQuery("input[name='LegL']").val(),
+                    legR: jQuery("input[name='LegR']").val(),
+                    fing: jQuery("input[name='Fing']").val(),
+                    root: jQuery("input[name='Root']").val()
+                }
+            };
 
-      // Get the current user id.
-      const userId = firebase.auth().currentUser.uid;
+            // Get the current user id.
+            var userId = firebase.auth().currentUser.uid;
 
-      // Get the reference to new object in firebase.
-      const ref = firebase
-        .database()
-        .ref('usernames')
-        .child(userId)
-        .child('styletranfertool')
-        .push();
+            // Get the reference to new object in firebase.
+            var ref = firebase
+                .database()
+                .ref("usernames")
+                .child(userId)
+                .child("styletranfertool")
+                .push()
 
-      // Set the value for the newly created reference.
-      ref.set(objectToSave);
+            // Set the value for the newly created reference.
+            .set(JSON.parse(JSON.stringify(objectToSave)));
+
+
+
+            
+               
+      
     }
 
     wnd.downloadAnim = function () {
@@ -307,6 +312,7 @@ export class StyleTransferComponent implements AfterViewInit {
       const animName = txt.value;
       gameInstance.SendMessage('ControllerHelper', 'ExportFromOutside', animName);
     };
+
 
     wnd.saveAnim = function () {
 
