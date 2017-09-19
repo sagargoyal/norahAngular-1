@@ -1,55 +1,61 @@
 <div class="">
-
+ 
     <div class="merger_container_animation">
 
         <div class="">
             <div class="row" style="margin-top:7px;">
-                <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-10 col-md-offset-1 desktop-view">
+                <div class="col-md-12 m-view">   
                     <div class="col-md-4">
 
-                        <h2 id="left_anim_title" style="color:#84838c;font-size:15px;text-align:center;padding:5px 0 0 0;">Input 1
+                        <h2 class="col-md-8" id="left_anim_title" style="color:#84838c;font-size:15px;text-align:center;margin-left:25px;">Input 1
                         </h2>
-
+                        
                         <div class="row">
-                            <h2 style="color:#84838c;font-size:15px;text-align:center;padding:5px 0 0 0;"></h2>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-1">
+                            <div class="carousel-arrow">
+                            <div class="left-arrow">
                                 <a href="javascript:ApplyLeftAnim(-1);" class="carousel-control left" style="left:0px; top: 110px; height: 0px;">
                                     <img src="assets/images/left_icon.png">
                                 </a>
                             </div>
-                            <div class="col-md-7">
-                                <div class="left_animation_mp43">
-
-                                    <video autoplay loop muted id="left_animation_mp4">
-                    <source id="left_animation_mp4_src" src="" type="video/mp4"/>
-                  </video>
-                                    <!--<img src="img/plus_round.png" style="position:absolute;top:5px;left:19px;">-->
-                                </div>
-                                <span id="left_anim_duration"></span>
-                            </div>
-
-                            <div class="col-md-1">
+                            <div class="right-arrow">
                                 <a href="javascript:ApplyLeftAnim(1);" class="carousel-control right" style="right:37px; height: 0px; top: 110px;">
                                     <img src="assets/images/right_icon.png">
                                 </a>
                             </div>
+                            </div>
+                            <div class="col-md-8 left_animation_V">
+                                <div class="left_animation_mp43"> 
+
+                                    <video autoplay loop muted id="left_animation_mp4">
+                                    <source id="left_animation_mp4_src" src="" type="video/mp4"/>
+                                  </video>  
+                  
+                                </div>
+                                <h2 style="color:#84838c;font-size:15px;" id="left_anim_duration"></h2>
+                            </div>  
+
+                            
                         </div>
                         <input id="left_anim_name" autocomplete="on" type="text" placeholder="left animation name" value="https://firebasestorage.googleapis.com/v0/b/animake-672fc.appspot.com/o/yamlFiles%2Fblock.anim?alt=media&token=e05704ef-e047-4d5d-b690-d782817e329b" class="in_bg"
                             style="display:none;">
                     </div>
                     <div class="col-md-4 output-window">
-                        <h2 style="color:#84838c;font-size:15px;text-align:center;padding:5px 0 0 0;">Output Window</h2>
-                        <div id="gameContainer2" class="col-md-11">
-                            <div id="gameContainer" style="height: 250px"></div>
+                        <div class="col-md-10">
+                            <h2 style="color:#84838c;font-size:15px;text-align:center;padding:0px 0 0 0;">Output Window</h2>
+                        </div>
+                        <div  id="gameContainer2" class="col-md-10">
+                        <div _ngcontent-hpr-64="" class="row gameContainerVVideo">
+                            <h2 _ngcontent-hpr-64="" style="color:#84838c;font-size:15px;text-align:center;padding:5px 0 0 0;"></h2>
+                            </div>
+                            <div id="gameContainer" style="height: 250px; width: 100%;"></div>
                             <div class="enter-name">
                                 <div class="row">
                                     <div class="col-md-10" style="padding:0;margin:0;padding-left:17px;">
-                                        <input id="animation_name" type="text" autocomplete="off" placeholder="enter name" class="form-control">
+                                        <input id="animation_name" type="text" autocomplete="off" placeholder="enter name" value="Download Animation" class="form-control">
                                     </div>
                                     <div class="col-md-2" style="padding:0;margin:0;margin-left:-16px;background:#4c4756;">
-                                        <a href="javascript:downloadAnim();"><span
+                                        <a href="javascript:downloadAnim();"><span  
                       style="display:block;width:100%;height:35px;background:url('assets/images/down_plus.jpg') no-repeat -0px 5px;border:0px solid #fff"></span></a>
                                     </div>
                                 </div>
@@ -58,34 +64,77 @@
                         </div>
 
                     </div>
-                    <h2 id="right_anim_title" style="color:#84838c;font-size:15px;text-align:center;padding:5px 0 0 0;">Input 2
-                    </h2>
+
                     <div class="col-md-4">
+
+                        <h2 class="col-md-8" id="right_anim_title" style="color:#84838c;font-size:15px;text-align:center;margin-left:25px;">Input 2
+                        </h2>
+
                         <div class="row">
                             <h2 style="color:#84838c;font-size:15px;text-align:center;padding:5px 0 0 0;"></h2>
                         </div>
                         <div class="row">
-                            <div class="col-md-1">
-                                <a href="javascript:ApplyRightAnim(-1);" class="carousel-control left" style="left: 0px; top: 110px; height: 0px;">
+                            <div class="carousel-arrow">
+                            <div class="left-arrow">
+                                <a href="javascript:ApplyRightAnim(-1);" class="carousel-control left" style="left:0px; top: 110px; height: 0px;">
                                     <img src="assets/images/left_icon.png">
                                 </a>
                             </div>
-                            <div class="col-md-7">
-                                <div class="image">
-                                    <video autoplay loop muted id="right_animation_mp4">
-                    <source id="right_animation_mp4_src" src="" type="video/mp4"/>
-                  </video>
+                            <div class="right-arrow">
+                                <a href="javascript:ApplyRightAnim(1);" class="carousel-control right" style="right:37px; height: 0px; top: 110px;">
+                                    <img src="assets/images/right_icon.png">
+                                </a>
+                            </div>
+                            </div>
+                            <div class="col-md-8 left_animation_V">
+                                <div class="left_animation_mp43"> 
+                                <video autoplay loop muted id="right_animation_mp4">
+                                    <source id="right_animation_mp4_src" src="" type="video/mp4"/>
+                                </video>
+                  
                                 </div>
-                                <span id="right_anim_duration"></span>
+                                <h2 _ngcontent-ssq-64="" id="right_anim_duration" style="color:#84838c;font-size:15px;"></h2>
                             </div>
-                            <div class="col-md-1">
-                                <a href="javascript:ApplyRightAnim(1);" class="carousel-control right" style="right: 37px; height: 0px; top: 110px;">
-                                    <img src="assets/images/right_icon.png"></a>
+  
+                            
+                        </div>
+                        <input id="right_anim_name" autocomplete="on" type="text" placeholder="right animation name" value="http://35.197.25.101:8080/boxing.anim" class="in_bg"
+                            style="display:none;">
+                    </div>
+                    <!-- <div class="col-md-4">
+                        <h2 id="right_anim_title" style="color:#84838c;font-size:15px;text-align:center;margin-right:70px">Input 2
+                        </h2>
+                        <div class="row">
+                            <h2 style="color:#84838c;font-size:15px;text-align:center;padding:5px 0 0 0;"></h2>
+                        </div>
+                        <div class="row">
+                            <div class="carousel-arrow">
+                            <div class="left-arrow">
+                                <a href="javascript:ApplyLeftAnim(-1);" class="carousel-control left" style="left:0px; top: 110px; height: 0px;">
+                                    <img src="assets/images/left_icon.png">
+                                </a>
                             </div>
+                            <div class="right-arrow">
+                                <a href="javascript:ApplyLeftAnim(1);" class="carousel-control right" style="right:37px; height: 0px; top: 110px;">
+                                    <img src="assets/images/right_icon.png">
+                                </a>
+                            </div>
+                            </div> 
+                            <div class="col-md-8 left_animation_V">
+                                <div class="image">    
+                                    <video style="margin-top:-35px" src="https://firebasestorage.googleapis.com/v0/b/norahanimation.appspot.com/o/mp4Files%2Faggressive%20look.mp4?alt=media"autoplay loop muted id="right_animation_mp4">
+                        <source id="right_animation_mp4_src" src="" type="video/mp4"/>
+                      </video>
+                  
+                        </div>
+                        <h2 style="color:#84838c;font-size:15px;" id="right_anim_duration"></h2>
+                    </div>
+                            
                         </div>
                         <input id="right_anim_name" autocomplete="on" type="text" placeholder="right animation name" value="http://35.197.25.101:8080/boxing.anim" class="in_bg" style="display:none;">
 
-                    </div>
+                    </div> -->
+                </div>
                 </div>
 
             </div>
@@ -95,21 +144,53 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1" style="margin-top:10px;">
                     <div class="blending_options">
-                        <div class="col-md-3">
+                        
+                        <div class="checkbox-center">
+                        <div class="checkbox-title">
                             <h3 style="font-size:18px;color:#fefefe;margin-top:10px;">Blending Options:</h3>
                         </div>
-                        <div class="col-md-1">
+                      <!--  <div _ngcontent-mjr-64="" class="col-5">
+                           <div _ngcontent-mjr-64="" class="checkbox">
+                               <label _ngcontent-mjr-64=""><input _ngcontent-mjr-64="" autocomplete="off" checked="checked" id="loop" name="radio" onclick="handleClick(this);" style="height:19px; width:35px; " type="radio" value="">Loop</label>
+                           </div>
+                       </div>
+                       <div _ngcontent-mjr-64="" class="col-5">
+                           <div _ngcontent-mjr-64="" class="checkbox">
+                               <label _ngcontent-mjr-64=""><input _ngcontent-mjr-64="" autocomplete="off" id="timestretch" name="radio" onclick="handleClick(this);" style="height:19px; width:35px; " type="radio" value="">Time stretch</label>
+                           </div>
+                       </div> -->
+                       <div class="f-radio">
+                       <ul>
+                              <li class="">
+                                <input type="radio" id="loop" name="radio" checked="checked" onclick="handleClick(this);" >
+                                <label  for="loop">Loop Stretch</label>
+                                
+                                <div class="check"></div>
+                              </li>
+
+                              <li class="">
+                                <input  type="radio" id="timestretch" name="radio" onclick="handleClick(this);">
+                                <label for="timestretch">Time Stretch</label>
+                                
+                                <div class="check"></div>
+                              </li>
+                              
+                             
+                        </ul>
+                        </div>
+                       </div>
+                        <!-- <div class="col-md-1">
                             <div class="checkbox">
                                 <label><input type="radio" autocomplete="off" value="" checked="checked" onclick='handleClick(this);'
-                              name="radio" id = "loop">Loop</label>
+                              name="radio" id = "loop" style="height:19px; width:35px; ">Loop</label>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="checkbox">
                                 <label><input type="radio" autocomplete="off" value="" onclick='handleClick(this);'
-                              name="radio" id="timestretch">Time stretch</label>
+                              name="radio" style="height:19px; width:35px; " id="timestretch">Time stretch</label>
                             </div>
-                        </div>
+                        </div> -->
 
 
                         <!-- <div class="col-md-4">
@@ -134,66 +215,78 @@
         </div>
     </div>
     <br>
+<!--   <perfect-scrollbar class="an-head-details-scrollable" >
 
+                <div class="head-detail-block content">
+                 
+                </div>
+
+          </perfect-scrollbar> -->
     <div class="blending_control">
         <div style="padding:0;">
-            <div class="col-md-9 col-md-offset-1">
+        
+            <div class="col-md-9 col-md-offset-1" id="comments" style="">
                 <h3 style="font-size:18px;color:#fefefe;margin-top:-20px;margin-left:2px;">Blending Control:</h3>
                 <div class="row blending_control_block">
                     <label class="col-xs-2">Head</label>
                     <div class="range-slider">
-                        <input class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="Head">
+                        <input style="padding-left:0px;width:80.33%;" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="Head">
                     </div>
                 </div>
 
                 <div class="row blending_control_block">
                     <label class="col-xs-2">Torso</label>
                     <div class="range-slider">
-                        <input class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="Trso">
+                        <input style="padding-left:0px;width:80.33%;" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="Trso">
                     </div>
                 </div>
 
                 <div class="row blending_control_block">
                     <label class="col-xs-2">Left Arm</label>
                     <div class="range-slider">
-                        <input class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="ArmL">
+                        <input style="padding-left:0px;width:80.33%;" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="ArmL">
                     </div>
                 </div>
 
                 <div class="row blending_control_block">
                     <label class="col-xs-2">Right Arm</label>
                     <div class="range-slider">
-                        <input class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="ArmR">
+                        <input style="padding-left:0px;width:80.33%;" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="ArmR">
                     </div>
                 </div>
 
                 <div class="row blending_control_block">
                     <label class="col-xs-2">Left Leg</label>
                     <div class="range-slider">
-                        <input class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="LegL">
+                        <input style="padding-left:0px;width:80.33%;" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="LegL">
                     </div>
                 </div>
 
                 <div class="row blending_control_block">
                     <label class="col-xs-2">Right Leg</label>
                     <div class="range-slider">
-                        <input class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="LegR">
+                        <input style="padding-left:0px;width:80.33%;" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="LegR">
                     </div>
                 </div>
 
                 <div class="row blending_control_block">
                     <label class="col-xs-2">Fingers</label>
                     <div class="range-slider">
-                        <input class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="Fing">
+                        <input style="padding-left:0px;width:80.33%;" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="Fing">
                     </div>
                 </div>
                 <div class="row blending_control_block">
                     <label class="col-xs-2">Root</label>
                     <div class="range-slider">
-                        <input [(ngModel)]="root" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0" max="100" name="Root">
+                        <input style="padding-left:0px;width:80.33%;" class="col-xs-10 range-slider__range" autocomplete="off" type="range" value="0" min="0"  max="100"  name="Root" [(ngModel)]="root" >
                     </div>
                 </div>
             </div>
+           
         </div>
     </div>
+    
 </div>
+<style>
+
+</style>

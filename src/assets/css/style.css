@@ -87,7 +87,9 @@ h1.navbar-brand_ {
     position: relative;
     display: inline-block;
 }
-
+div.spacing {
+margin-top: 54px;
+}
 h1.navbar-brand_ a {
     display: inline-block;
 }

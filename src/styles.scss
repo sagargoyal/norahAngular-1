@@ -113,7 +113,7 @@ html body {
 }
 
 .content.indent {
-    padding-bottom: 250px !important;
+    padding-bottom: 50px !important;
 }
 
 .zodiac_box .box-video>div {
@@ -152,7 +152,9 @@ html body {
 .download-anim {
     float: left;
 }
-
+.container{
+    padding: 0;
+}
 .library-checkbox {
     max-width: 100%;
     margin-bottom: 5px;

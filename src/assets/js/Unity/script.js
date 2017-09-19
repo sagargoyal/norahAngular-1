@@ -34,7 +34,8 @@ function HandleReturnPressedFromWebGL() {
 
 function ResetAndHidePlayer(sendResetMessage) {
     if (sendResetMessage)
-        gameInstance.SendMessage("Terrain", "FromJS_Reset");
+        UnityReset();
+    // gameInstance.SendMessage("Terrain", "FromJS_Reset");
     document.getElementById("unity").style.display = "none";
     //Some weird hack we need to do to get button presses to register again
     //document.getElementById("input_area").click();
@@ -43,22 +44,22 @@ function ResetAndHidePlayer(sendResetMessage) {
 }
 
 
-document.onmousedown = function(event) {
+// document.onmousedown = function(event) {
 
-    if (viewingTerrainWebGL) {
-        /*  if (event.target.nodeName != "CANVAS") {
-              document.getElementById("unity").style.display = "none";
-              viewingTerrainWebGL = false;
-              document.exitPointerLock();    
-          }*/
-    } else {
-        if (event.target.nodeName == "INPUT") {
-            gameInstance.SendMessage("Terrain", "FromJS_SetWebGLInput", 0);
-        } else {
-            gameInstance.SendMessage("Terrain", "FromJS_SetWebGLInput", 1);
-        }
-    }
-};
+//     if (viewingTerrainWebGL) {
+//         /*  if (event.target.nodeName != "CANVAS") {
+//               document.getElementById("unity").style.display = "none";
+//               viewingTerrainWebGL = false;
+//               document.exitPointerLock();    
+//           }*/
+//     } else {
+//         if (event.target.nodeName == "INPUT") {
+//             gameInstance.SendMessage("Terrain", "FromJS_SetWebGLInput", 0);
+//         } else {
+//             gameInstance.SendMessage("Terrain", "FromJS_SetWebGLInput", 1);
+//         }
+//     }
+// };
 
 function ValidateInputsThenApply(src) {
     var foundErr = false;
@@ -72,10 +73,10 @@ function ValidateInputsThenApply(src) {
     document.getElementById("rightView2").style.display = "none";
 
     document.getElementById("unity").style.display = "block";
-
+    UrlsToUnity(src);
     //Send the urls to unity
-    gameInstance.SendMessage("Terrain", "FromJS_LoadHeightmap", src);
-    gameInstance.SendMessage("Terrain", "FromJS_LoadTerrainTex", 'https://firebasestorage.googleapis.com/v0/b/norahanimation.appspot.com/o/texture%2Fnewtex1_lores.jpg?alt=media&token=0ff19e3a-1246-4e7c-ada9-7e2e3399f725');
+    // gameInstance.SendMessage("Terrain", "FromJS_LoadHeightmap", src);
+    // gameInstance.SendMessage("Terrain", "FromJS_LoadTerrainTex", 'https://firebasestorage.googleapis.com/v0/b/norahanimation.appspot.com/o/texture%2Fnewtex1_lores.jpg?alt=media&token=0ff19e3a-1246-4e7c-ada9-7e2e3399f725');
 
     //To make we don't immediately close the unity popup window when setting viewingGL to true
     setTimeout(function() { viewingTerrainWebGL = true; }, 100);

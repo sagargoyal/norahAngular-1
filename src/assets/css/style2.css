@@ -364,7 +364,30 @@ li.sex-r-slider {
 }
 .object-container-in {
     margin: 15px 0 0 0;
-} 
+}
+.an-display-flex{
+    display: flex;
+}
+.an-dna-conatiner{
+    flex: 1;
+}
+.an-head-details-vertical{
+    width: 200px;
+    margin-top: 0 !important;
+}
+.an-head-details-vertical .scroller-content{
+    width: 100% !important;
+}
+.an-head-details-vertical .scroller-content > div{
+    width: 180px !important;
+}
+.an-full-min-height-container{
+    /*min-height: calc( 100vh - 214px);*/
+    min-height: 100vh;
+}
+.min-height-520px{
+    min-height: 520px;
+}
 .object-container-l {
     width: 20%;
     float: left;
@@ -624,7 +647,6 @@ height: 4px !important;
     background: #253443;
     margin:10px 0 0 0;
     float: left;
-    width: 100%;
 }
 .head-title {
     border-bottom: 1px solid #303d4c;
@@ -732,3 +754,5 @@ ul.dropdown-menu::-webkit-scrollbar-thumb {
     text-decoration: none;
 }
 /*--New DNA code--*/
+
+

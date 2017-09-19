@@ -5,22 +5,14 @@
         <li>
 
           <ul class="terrain-detail">
-		  <li><a><span style="font-size: 16px;
+            <li><a><span style="font-size: 16px;
     color: #0287f9;
     font-weight: 500;">Gun Generator</span></a></li>
-            <li
-              [ngClass]="{'active-gen': activeLink === 'Sniper'}"
-              (click)="selectGun('Sniper')"><span>Sniper</span></li>
-            <li
-              [ngClass]="{'active-gen': activeLink === 'Shotgun'}"
-              (click)="selectGun('Shotgun')"><span>Shotgun</span></li>
-            <li
-              [ngClass]="{'active-gen': activeLink === 'Rifle'}"
-              (click)="selectGun('Rifle')"><span>Rifle</span></li>
-            <li
-              [ngClass]="{'active-gen': activeLink === 'Handgun'}"
-              (click)="selectGun('Handgun')"><span>Handgun</span></li>
-           <!--  <li
+            <li [ngClass]="{'active-gen': activeLink === 'Sniper'}" (click)="selectGun('Sniper')"><span>Sniper</span></li>
+            <li [ngClass]="{'active-gen': activeLink === 'Shotgun'}" (click)="selectGun('Shotgun')"><span>Shotgun</span></li>
+            <li [ngClass]="{'active-gen': activeLink === 'Rifle'}" (click)="selectGun('Rifle')"><span>Rifle</span></li>
+            <li [ngClass]="{'active-gen': activeLink === 'Handgun'}" (click)="selectGun('Handgun')"><span>Handgun</span></li>
+            <!--  <li
               [ngClass]="{'active-gen': activeLink === 'caves'}"
               (click)="selectTerrain('caves')"><span>Caves</span></li> -->
           </ul>
@@ -31,18 +23,24 @@
       <div class="row">
         <div class="terrain-components">
           <div class="ter-gen1" *ngIf="!isGenerate">
-
-
             <div class="col-md-11">
               <h3 class="text-center">Gun Generator</h3>
               <section class="items clearfix">
-                <div class="col-md-3" *ngFor="let terrain of guns">
+                <div class="col-md-3" *ngFor="let terrain of guns; let index=index" (click)="changeBorder(index)"  >
                   <div class="item">
-                    <img [src]="terrain" alt="">
+                    <img [src]="terrain.url" alt="" [ngStyle]="myStyle" [ngClass]="{selected: terrain.isSelect === true,unselected: terrain.isSelect === false}">
+                    <div class="checked-icon" *ngIf="terrain.isSelect">
+                      <div class="item-row" style=" padding-top: 42px;  padding-right: 103px;" >
+                          <div style="border:1px solid grey;border-radius: 50%;height:30px;width:30px;text-align: center;
+                          padding-top: 3px">
+                          <i class="fa fa-check fa-lg" aria-hidden="true" style="color:white"></i>
+                          </div>
+                      </div>
+                    </div>
                     <div class="overlay">
                       <div class="item-row">
                         <button>
-                          <i class="fa fa-play" aria-hidden="true" (click)="openImage(terrain)"></i>
+                          <i class="fa fa-play" aria-hidden="true" (click)="openImage(terrain.url)"></i>
                         </button>
                       </div>
                       <div class="item-row action-btn">
@@ -61,14 +59,14 @@
               </div>
             </div>
             <div class="col-md-1">
-              <div class="full-btn" (click)="nextTerGan()">
+              <div class="full-btn" (click)="showHideSidePane()">
                 <a><i class="fa fa-play fa-rotate-180"></i></a>
               </div>
             </div>
           </div>
           <div class="ter-gen2" *ngIf="isGenerate">
             <div class="col-md-1 right-arrow">
-              <div class="full-btn" (click)="nextTerGan()">
+              <div class="full-btn" (click)="showHideSidePane()">
                 <span>Generation</span>
                 <a><i class="fa fa-play"></i></a>
               </div>
@@ -81,25 +79,25 @@
                 <div class="delete-selected" type="button" *ngIf="showDeleteSelected" (click)="deleteSelected()">Delete Selected</div>
 
                 <section class="items clearfix" id="gen2-images">
-                  <div class="col-md-3" *ngFor="let terrain of userTerrains | async; let i = index">
-                    <div class="item" (click)="selectImg($event, terrain)">
+                  <div class="col-md-3" *ngFor="let ter of userTerrains ; let i = index">
+                    <div class="item" (click)="selectImg($event, ter)">
                       <label [for]="i">
-                        <i class="fa fa-check-circle-o fa-inverse" style="display: none;" aria-hidden="true"></i>
-                        <img [src]="terrain" alt="">
-                        <div class="overlay">
-                          <div class="item-row">
-                            <button style="position: absolute; left: 0; display: none;">
-                              <input class="imageSelection" [id]="i" type="checkbox" value="">
-                            </button>
-                            <button>
-                              <i class="fa fa-play" aria-hidden="true" (click)="openImage(terrain)"></i>
-                            </button>
+                          <i class="fa fa-check-circle-o fa-inverse" style="display: none;" aria-hidden="true"></i>
+                          <img [src]='ter?ter.src:""' alt="">
+                          <div class="overlay">
+                            <div class="item-row">
+                              <button style="position: absolute; left: 0; display: none;">
+                                <input class="imageSelection" [id]="i" type="checkbox" value="">
+                              </button>
+                              <button>
+                                <i class="fa fa-play" aria-hidden="true" (click)="openImage(ter)"></i>
+                              </button>
+                            </div>
+                            <div class="item-row action-btn">
+                              <button (click)="deleteFromLibrary(ter)">Delete</button>
+                            </div>
                           </div>
-                          <div class="item-row action-btn">
-                            <button (click)="deleteFromLibrary(terrain)">Delete</button>
-                          </div>
-                        </div>
-                      </label>
+                        </label>
                     </div>
                   </div>
                 </section>
@@ -128,18 +126,18 @@
                         <div id="collapse{{ i + 1 }}" class="panel-collapse collapse">
                           <div class="panel-body clearfix">
 
-                            <div class="col-md-3" *ngFor="let receivedImg of obj.receivedImages">
+                            <div class="col-md-3" *ngFor="let receivedImg of obj">
                               <div class="item">
                                 <div class="rotate">
-                                  <img [src]="receivedImg" alt="" (error)="errorImage($event)" (load)="imageLoaded($event)"></div>
+                                  <img [src]="receivedImg.img" alt="" (error)="errorImage($event)" (load)="imageLoaded($event)"></div>
                                 <div class="overlay">
                                   <div class="item-row">
                                     <button>
-                                      <i class="fa fa-play" aria-hidden="true" (click)="openImage(receivedImg)"></i>
+                                      <i class="fa fa-play" aria-hidden="true" (click)="openImage(receivedImg.img)"></i>
                                     </button>
                                   </div>
                                   <div class="item-row action-btn">
-                                    <button (click)="addToLibraryFromGeneration(receivedImg)">Add to library</button>
+                                    <button (click)="addToLibraryFromGeneration(receivedImg.img)">Add to library</button>
                                   </div>
                                 </div>
                               </div>
@@ -154,7 +152,7 @@
                 </section>
                 <div class="generate-btn text-center">
                   <button class="shuffle-gen" (click)="uploadImages('1.0', 2)">Hybrid Generate</button>
-                  <button class="shuffle-gen" (click)="uploadImages('0.0', 1)">Shuffle Generate</button>
+                  <button class="shuffle-gen">Shuffle Generate</button>
                 </div>
               </div>
             </div>

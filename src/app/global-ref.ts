@@ -20,6 +20,8 @@ export interface MyGlobal {
   LoadFinished: any;
   ApplyLeftAnim: any;
   ApplyRightAnim: any;
+  UrlsToUnity:any;
+  UnityReset:any;
 }
 
 export abstract class GlobalRef {

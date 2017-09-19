@@ -6,14 +6,14 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FileLoader } from 'three';
-
+import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class GunInterpService {
 
   private terrainsArr: number[] = [1, 2, 3, 4, 5];
   user: any;
   private receivedData = [];
-
+  private currentUser:BehaviorSubject<any>;
   constructor(
     @Inject(FirebaseApp) private firebaseApp: any,
     private db: AngularFireDatabase,
@@ -21,6 +21,20 @@ export class GunInterpService {
     private global: GlobalRef) {
     this.getUser();
 
+    this.currentUser=new BehaviorSubject<any>(firebase.auth().currentUser);
+    firebase.auth().onAuthStateChanged(user1=>{
+      
+               // if(user)
+                  console.log(user1);
+                  this.user=user1.uid;
+                  console.log(this.user)
+                  this.currentUser.next(user1);
+                  
+                });
+  }
+
+  isReady(){
+    return this.currentUser;
   }
 
   setReceivedData(receivedData) {
@@ -31,7 +45,8 @@ export class GunInterpService {
   }
 
   getUser() {
-    this.auth.subscribe(user => user ? this.user = user.uid : '');
+    
+  //  this.auth.subscribe(user => user ? this.user = user.uid : '');
   }
 
   /* Get data from Firebase Storage */
@@ -52,6 +67,7 @@ export class GunInterpService {
   }
 
   getGunsFromLibrary(type: string) {
+    console.log(`Getting guns from libraray ->/usernames/${this.user}/gunLibrary` )
     if (this.user) {
       const terrainLibraryList = this.db.list(`/usernames/${this.user}/gunLibrary`);
       console.log(terrainLibraryList);
@@ -149,6 +165,13 @@ console.log(gun)
     terrainLibraryList.remove(key);
   }
 
+  removeGunFromLibrary(key){
+    //let terrainLibraryList = this.db.list(`/usernames/${this.user}/gunLibrary`);
+    //terrainLibraryList.remove(key);
+    console.log("removing key "+key);  
+  this.db.object(`/usernames/${this.user}/gunLibrary/${key}`).set(null);
+  }
+
   pushNewTerrain(terrainType: string, terrainName: string, src?: string) {
     const wnd = this.global.nativeGlobal;
     const toastr = wnd.toastr;
@@ -220,4 +243,69 @@ console.log(gun)
       
       
              }
+
+
+       getGunJson(gun1,gun2){
+console.log(gun1);
+console.log(gun2);
+console.log("GUN JSONS DOWNLOADING");
+
+        let gunType1=gun1.type;
+        let gunType2=gun2.type;
+        let gun1Name:string=gun1.name
+        gun1Name=gun1Name.replace("png","json");
+
+        let gun2Name:string=gun2.name
+        gun2Name=gun2Name.replace("png","json");
+        console.log(gun2Name+"    gun1 "+gun1Name);
+        
+        var file1= new Promise((resolve,reject)=>{ firebase.storage().ref(`/gunJSON/${gunType1}`).child(gun1Name).getDownloadURL().then(url=>{
+          
+          
+                    // This can be downloaded directly:
+                    var xhr = new XMLHttpRequest();
+                    xhr.responseType = 'text';
+                    xhr.onload = function(event) {
+                      var blob = xhr.response;
+                      resolve(JSON.parse(blob));
+                    };
+                    xhr.open('GET', url);
+                      xhr.send();
+                  }).catch((err)=>{
+
+                    console.log("Failed to load json");
+                    reject(err);
+                  });
+          
+          
+                  });
+          
+                  var file2= new Promise((resolve,reject)=>{ firebase.storage().ref(`/gunJSON/${gunType2}`).child(gun2Name).getDownloadURL().then(url=>{
+                    
+                    
+                              // This can be downloaded directly:
+                              var xhr = new XMLHttpRequest();
+                              xhr.responseType = 'text';
+                              xhr.onload = function(event) {
+                                var blob = xhr.response;
+                                resolve(JSON.parse(blob));
+                              };
+                              xhr.open('GET', url);
+                                xhr.send();
+                            }).catch((err)=>{
+          
+                              console.log("Failed to load json");
+                              reject(err);
+                            });
+                    
+                    
+                            });
+                            
+                            
+
+            return Promise.all([file1,file2]);
+          
+
+
+       }      
 }

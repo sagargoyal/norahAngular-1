@@ -44,11 +44,8 @@ export class TerrainGenService {
   getTerrainsFromLibrary(type: string) {
     const terrainsArr = Observable.of([]);
     if (this.user) {
-      const terrainLibraryList = this.db.list(`/usernames/${this.user}/terrainGenLibrary`);
-      console.log(terrainLibraryList);
-      return terrainLibraryList;
+      return this.db.list(`/usernames/${this.user}/terrainGenLibrary`);
     } else {
-      console.log('SHIT HAPPENED');
       return Observable.of([]);
     }
   }
@@ -72,12 +69,12 @@ export class TerrainGenService {
               .child('terrainGenLibrary')
               .once('value', data => {
                 const value = data.val();
-                console.log(value);
+                //console.log(value);
                 if ( value ) {
                   const exist = Object.keys(value).filter(key => {
                     return value[key].name === terrainName && value[key].type === terrainType;
                   });
-                  console.log(exist);
+                  //console.log(exist);
                   if ( !exist.length ) {
                     this.pushNewTerrain(terrainType, terrainName, terrain.src);
                   } else {
@@ -117,7 +114,7 @@ export class TerrainGenService {
     if ( firebase.auth().currentUser ) {
       const terrainType = terrain.type;
       const terrainName = terrain.name;
-      console.log('terrainname' + terrainName);
+      //console.log('terrainname' + terrainName);
       firebase.database()
         .ref('usernames')
         .child(firebase.auth().currentUser.uid)
@@ -126,8 +123,8 @@ export class TerrainGenService {
         .once('value', (snapshot) => {
           if ( snapshot.val() ) {
                 const value = snapshot.val();
-                console.log(value);
-                console.log(snapshot);
+                // console.log(value);
+                // console.log(snapshot);
                   const exist = Object.keys(value).filter(key => {
                     return value[key].name === terrainName && value[key].type === terrainType;
                   });
@@ -147,9 +144,9 @@ export class TerrainGenService {
     }
   }
 
-  removeTerrainsFromLibray(key){
+  removeTerrainsFromLibray(key) {
     const terrainLibraryList = this.db.list(`/usernames/${this.user}/terrainGenLibrary`);
-    terrainLibraryList.remove(key);
+    return terrainLibraryList.remove(key);
   }
   pushToGame(terrainType: string, terrainName: string, src?: string) {
     /*firebase.database()
@@ -198,8 +195,8 @@ export class TerrainGenService {
                                .put(request.response)
                                .then((snapshot) => {
 
-                                  console.log('adding terraingen to library');
-                                  console.log(newObjRef);
+                                  // console.log('adding terraingen to library');
+                                  // console.log(newObjRef);
                                   newObjRef.set({
                                   type: terrainType,
                                   name: `${terrainType} ${terrainName}`,
@@ -207,8 +204,8 @@ export class TerrainGenService {
                                   imageLink: snapshot.downloadURL
                                   }).then((d) => {
                                       if (d){
-                                              console.log('failed to add terrain gen to libraray');
-                                                console.log(d);
+                                              // console.log('failed to add terrain gen to libraray');
+                                              //   console.log(d);
                                                 toastr.info('failed to add model to your library');
                                               }
                                           });

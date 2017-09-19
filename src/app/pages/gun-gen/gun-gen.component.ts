@@ -4,7 +4,8 @@ import { Http, RequestOptions, Headers, Response } from '@angular/http';
 import { HeightMapSocketService } from './HeightMapSocketService';
 import { GlobalRef } from '../../global-ref';
 import * as firebase from 'firebase';
-
+import { GunSocketService } from './gun-socket.service';
+import { inputVal, outputVal } from './mock-data';  //dummy data
 declare var $: any;
 declare var ValidateInputsThenApply: any;
 
@@ -13,7 +14,8 @@ declare var ValidateInputsThenApply: any;
   selector: 'app-gun-gen',
   templateUrl: './gun-gen.component.html',
   styleUrls: ['./gun-gen.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [GunSocketService]
 })
 export class GunGenComponent implements AfterViewInit {
 
@@ -24,17 +26,76 @@ export class GunGenComponent implements AfterViewInit {
   guns = [];
   selectedImgs = [];
   userTerrains: any;
+  gunFiles = [];
   /* Received Data after clicking on button Upload */
   receivedData: any[] = [];
   showDeleteSelected = false;
   @Input() generationType: string;
 
+  toastr: any;
   constructor(public gunGenService: GunInterpService,
-              private http: Http,
-              private socket: HeightMapSocketService,
-              private global: GlobalRef) {
+    private http: Http,
+    private socket: HeightMapSocketService,
+    private global: GlobalRef,
+    private gSocket: GunSocketService
+  ) {
+    const wnd = this.global.nativeGlobal;
+    this.toastr = wnd.toastr;
+
+    this.gSocket.on("connection", () => {
+      console.log("Connected");
+      this.showToast("Socket connected");
+    });
+
+    this.gSocket.on("files", (data) => {
+
+      console.log("Files received");
+      console.log(data);
+
+      this.showToast("Files received");
+      this.gunFiles = data["files"];
+      this.receivedData.push(this.gunFiles);
+    });
+
+    this.gSocket.on("errorInfo", (data) => {
+
+      console.log(data);
+
+      this.showToast("Info: " + data["msg"]);
+
+    });
+    //for gungenImages
+    this.gSocket.on("imageFile", (d) => {
+      console.log("ImageFile received");
+      console.log(d);
+      this.gunFiles = this.gunFiles.map((x) => {
+        if (x.id == d.file.id)
+        { return d.file } else { } return x
+      });
+
+      this.receivedData = this.receivedData.map((x) => {
+        if ((x[0]).id != (this.gunFiles[0]).id)
+          return x
+        else
+          return this.gunFiles
+      });
+    });
+
+    this.gunGenService.isReady().subscribe(user => {
+
+      if (user) {
+        //this.getGuns(this.activeLink);
+        console.log("calling nectTer" + user + "received");
+        this.nextTerGan();
+      }
+    })
+
   }
 
+
+  showToast(msg) {
+    this.toastr.info(msg);
+  }
   ngAfterViewInit() {
     this.getGuns(this.activeLink);
 
@@ -42,29 +103,33 @@ export class GunGenComponent implements AfterViewInit {
       let item;
       const imgs = document.getElementById('accordion').getElementsByTagName('img');
       const imgList = [];
-      for ( let i = 0; i < imgs.length; i++ ) {
-        if ( imgs[i].src === msg.path ) {
+      for (let i = 0; i < imgs.length; i++) {
+        if (imgs[i].src === msg.path) {
           item = imgs[i];
           break;
         }
       }
-      if ( item ) {
+      if (item) {
         item.src = msg.path;
       }
     });
+    this.nextTerGan();
   }
   getGuns(type: string) {
+    console.log("GFetting guns " + type);
     this.gunGenService.getGuns(type)
       .then(data => {
         console.log('DATAAAAA');
-        this.guns = data;
+        console.log(data);
+        this.guns=[];
+        data.map(res => {
+          this.guns.splice(this.guns.length,-1,{isSelect:false, url:res})
+        })
+        // this.guns = data;
       })
       .catch(error => console.log(error));
-    const reciveData = this.gunGenService.getReceivedData();
-    if ( reciveData ) {
-      this.receivedData = reciveData;
-    }
   }
+
   selectGun(type: string) {
     this.activeLink = type;
     this.getGuns(type);
@@ -73,12 +138,15 @@ export class GunGenComponent implements AfterViewInit {
     event.target.style.visibility = 'visible';
   }
 
+
   errorImage(event) {
     event.target.style.visibility = 'hidden';
     this.socket.emit('watch', { path: event.target.src });
   }
 
   nextTerGan() {
+    console.log("getting library");
+    console.log(this.gunGenService.user);
     this.gunGenService.getGunsFromLibrary('mountains')
       .subscribe(items => {
         const itemsArr = [];
@@ -88,12 +156,24 @@ export class GunGenComponent implements AfterViewInit {
             .ref(`gunImages/${item.type}/`)
             .child(`${item.name}`)
             .getDownloadURL()
-            .then(data => data)
-        );
+            .then(data => {
+              item["imgsrc"] = data;
+              //console.log(item);
+              return item;
+            }).catch(e => console.log(e))
+          );
         });
-        this.userTerrains = Promise.all(itemsArr);
+        Promise.all(itemsArr).then((d) => { this.userTerrains = d; console.log(d) });
+        console.log(this.userTerrains);
       });
+    //this.isGenerate = !this.isGenerate;
+    console.log(this.isGenerate);
+  }
+
+  showHideSidePane() {
     this.isGenerate = !this.isGenerate;
+    console.log("Switching Side panes");
+
   }
 
   isOpenAccord() {
@@ -101,8 +181,17 @@ export class GunGenComponent implements AfterViewInit {
 
   }
 
-  deleteFromLibrary(terrain: string) {
-    this.gunGenService.getGunsFromLibrary('mountains')
+  changeBorder = function (index) {
+    this.guns[index].isSelect = !this.guns[index].isSelect;
+    // this.selected = index;
+  }
+
+  deleteFromLibrary(terrain) {
+    console.log(terrain);
+
+    this.userTerrains = this.userTerrains.filter((x) => x.$key != terrain.$key);
+    this.gunGenService.removeGunFromLibrary(terrain.$key);
+    /*this.gunGenService.getGunsFromLibrary('mountains')
       .subscribe(items => {
         for ( const item of items ) {
           if ( (item as any ).type === 'mountains' && (item as any).name === terrain.match(/%2F(.+)\?/)[1] ) {
@@ -110,6 +199,7 @@ export class GunGenComponent implements AfterViewInit {
           }
         }
       });
+      */
   }
 
   addToLibraryFromGeneration(receivedImg) {
@@ -164,10 +254,10 @@ export class GunGenComponent implements AfterViewInit {
   clearCheckImages() {
 
     const images = document.getElementsByClassName('item');
-    for ( let i = 0; i < images.length; i++ ) {
-      if ( images[i].getElementsByTagName('input')[0] &&
+    for (let i = 0; i < images.length; i++) {
+      if (images[i].getElementsByTagName('input')[0] &&
         images[i].getElementsByTagName('input')[0].type === 'checkbox' &&
-        images[i].getElementsByTagName('input')[0].checked ) {
+        images[i].getElementsByTagName('input')[0].checked) {
         images[i].getElementsByTagName('input')[0].checked = false;
         const test = images[i].getElementsByClassName('fa-check-circle-o') as HTMLCollectionOf<HTMLElement>;
         test[0].style.display = test[0].style.display === 'none' ? '' : 'none';
@@ -179,96 +269,44 @@ export class GunGenComponent implements AfterViewInit {
   }
 
   uploadImages(p_cross, minCount) {
-    const images = document.getElementById('gen2-images').getElementsByClassName('item');
-    const srcList = [];
-    let a;
-    let selectedCount = 0;
-    for ( let i = 0; i < images.length; i++ ) {
-      if ( images[i].getElementsByTagName('input')[0] &&
-        images[i].getElementsByTagName('input')[0].type === 'checkbox' &&
-        images[i].getElementsByTagName('input')[0].checked ) {
-        console.log('Select' + images[i].getElementsByTagName('img')[0].src);
-        if ( a ) {
-          a = a + ',';
-        } else {
-          a = '';
-        }
-        a = a + images[i].getElementsByTagName('img')[0].src;
-        selectedCount++;
-      }
+    const wnd = this.global.nativeGlobal;
+    const toastr = wnd.toastr;
 
-    }
 
-    if ( selectedCount < minCount ) {
-      const wnd = this.global.nativeGlobal;
-      const toastr = wnd.toastr;
-      if ( minCount === 1 ) {
-        toastr.error('Select atleast 1 heightmap for shuffle generate');
-      } else {
-        toastr.error('Select atleast 2 heightmaps for hybrid generate');
-      }
+    if (this.selectedImgs.length < minCount) {
+      toastr.error('Select only 2 Imagemaps for hybrid generate');
       return;
+
     }
+    if (this.selectedImgs.length > 2) {
+      toastr.error('Select only 2 Imagemaps for hybrid generate');
+      return;
+
+    }
+
 
     this.clearCheckImages();
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
-    const options = new RequestOptions({ headers: headers });
-    const date_t = Date.now();
-    const body = {
-      image_src: a,
-      imgUploader: '',
-      date: date_t,
-      pcross: p_cross,
-      pop_size: '2',
-      iter: '3',
-      hmin: '0',
-      hmax: '8',
-      r: '1024',
-      c: '1024',
-      func_mut: 'sin',
-      func_cross: 'plus',
-      gaussian_c: '1.4'
-    };
-    if ( a ) {
-      this.http.post('https://absentiaterraingen.com/upload', body, options)
-        .map((resp: Response) => resp['_body'])
-        .subscribe(
-          (data: string) => {
-            /*
-              Create a custom object which allow us generate new tabs
-              Received data are saved in property which allow us display received images in the tabs
-            */
-            const values = [];
-            const customObj = {
-              receivedImages: data.split(',').map(function (imgPath) {
-                return 'https://absentiaterraingen.com/' + imgPath;
-              })
-            };
 
-            this.receivedData.push(customObj);
-            this.gunGenService.setReceivedData(this.receivedData);
-            for ( let i = 1; i <= this.receivedData.length; i++ ) {
-              $('#collapse' + i).collapse('hide');
-            }
-            setTimeout(() => {
+    this.toastr.info("Downloading guns Json")
+    this.gunGenService.getGunJson(this.selectedImgs[0], this.selectedImgs[1]).then(val => {
 
-              $('#collapse1').collapse('show');
-            }, 500);
-          }, //For Success Response
-          err => {
-            console.error(err);
-          } //For Error Response
-        );
-    }
+      console.log("JSON VALUES DOWNLOAED");
+      this.toastr.info("Generating gun Models");
+      console.log(val);
+      this.generateGun(val[0], val[1]);
+    }).catch((err) => {
+      console.log("Failed to download JSONS");
+      this.toastr.error("Failed to download guns Json.")
+
+    })
   }
 
   selectImg(event, tera) {
+    console.log(tera);
     const images = document.getElementsByClassName('item');
     //for (let i = 0; i < images.length; i++) {
     //if ( images[i].getElementsByTagName('input')[0] && images[i].getElementsByTagName('input')[0].checked) {
-    if ( event.currentTarget.getElementsByTagName('input')[0] && event.currentTarget.getElementsByTagName('input')[0].checked ) {
+    if (event.currentTarget.getElementsByTagName('input')[0] && event.currentTarget.getElementsByTagName('input')[0].checked) {
       const test = event.currentTarget.getElementsByClassName('fa-check-circle-o');
       test[0].style.display = test[0].style.display === 'none' ? '' : 'none';
       event.currentTarget.getElementsByTagName('input')[0].checked = true;
@@ -279,11 +317,12 @@ export class GunGenComponent implements AfterViewInit {
     const images2 = document.getElementById('gen2-images').getElementsByClassName('item');
     const selectedCount = 0;
     this.showDeleteSelected = false;
-    for ( let i = 0; i < images2.length; i++ ) {
-      if ( images2[i].getElementsByTagName('input')[0] &&
+    this.selectedImgs = []
+    for (let i = 0; i < images2.length; i++) {
+      if (images2[i].getElementsByTagName('input')[0] &&
         images2[i].getElementsByTagName('input')[0].type === 'checkbox' &&
-        images2[i].getElementsByTagName('input')[0].checked ) {
-        this.showDeleteSelected = true;
+        images2[i].getElementsByTagName('input')[0].checked) {
+        this.showDeleteSelected = false;
         this.selectedImgs.push(tera);
       }
     }
@@ -293,15 +332,22 @@ export class GunGenComponent implements AfterViewInit {
   deleteSelected() {
     this.gunGenService.getGunsFromLibrary('mountains')
       .subscribe(items => {
-        for ( const item of items ) {
-          for ( const selected of this.selectedImgs ) {
-            if ( (item as any ).type === 'mountains' && (item as any).name === selected.match(/%2F(.+)\?/)[1] ) {
+        for (const item of items) {
+          for (const selected of this.selectedImgs) {
+            if ((item as any).type === 'mountains' && (item as any).name === selected.match(/%2F(.+)\?/)[1]) {
               this.gunGenService.removeTerrainsFromLibray((item as any).$key);
             }
           }
         }
         this.selectedImgs = [];
       });
+  }
+
+
+  generateGun(inval, outval) {
+    console.log("sending files");
+    this.gSocket.emit("upload", { inputValues: inval, outputValues: outval });
+
   }
 
 }

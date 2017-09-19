@@ -203,3 +203,23 @@ h2 {
 .logo-box {
   //background: #412a58 url(/assets/images/glow2.png) center bottom no-repeat;
 }
+
+#button-color {
+  margin: 0 40px 100px 0;
+    left: 40%;
+    box-shadow: none;
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    padding: 14px 42px;
+    font: 18px 'Questrial';
+    background: #253443;
+    letter-spacing: 2px;
+    border-radius: 50px;
+    outline: none;
+    color: #ffffff;
+    overflow: hidden;
+    float: none;
+    z-index: 1;
+    transition: all 0.35s;
+}

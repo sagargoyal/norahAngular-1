@@ -1,5 +1,5 @@
 <div class="main_wapper wrapper wrap">
-    <div class="row">
+    <div class="row" *ngIf="unityLoaded">
         <div class="col-md-2 terrain-sidebar">
             <ul>
                 <li>
@@ -67,30 +67,26 @@
                                 <h3 class="text-center">
                                     Original Selections
                                 </h3>
-                                <div class="delete-selected" type="button" *ngIf="showDeleteSelected" (click)="deleteSelected()">Delete Selected</div>
+                                <div class="delete-selected" type="button" *ngIf="selectedImgs.length" (click)="deleteSelected()">Delete Selected</div>
 
                                 <section class="items clearfix" id="gen2-images">
-                                    <div class="col-md-3" *ngFor="let terrain of userTerrains | async; let i=i ndex">
-                                        <div class="item" (click)="selectImg($event, terrain)">
-                                            <label [for]="i">
-                        <i class="fa fa-check-circle-o fa-inverse" style="display: none;" aria-hidden="true"></i>
-                        <img [src]="terrain" alt="">
-                        <div class="overlay">
-                          <div class="item-row">
-                            <button style="position: absolute; left: 0; display: none;">
-                              <input class="imageSelection" [id]="i" type="checkbox" value="">
-                            </button>
-                            <button>
-                              <i class="fa fa-play" aria-hidden="true" (click)="openImage(terrain)"></i>
-                            </button>
-                          </div>
-                          <div class="item-row action-btn">
-                            <button (click)="deleteFromLibrary(terrain)">Delete</button>
-                          </div>
-                        </div>
-                      </label>
+                                  <div class="col-md-3" *ngFor="let terrain of userTerrains; let i = index">
+                                    <div class="item" [ngClass]="terrain.selected ? 'active-img' : ''">
+                                        <i class="fa fa-check-circle-o fa-inverse" *ngIf="terrain.selected"></i>
+                                        <img [src]="terrain.url" alt="">
+                                        <div class="overlay" (click)="selectImg(terrain)">
+                                          <div class="item-row">
+                                            <button>
+                                              <i class="fa fa-play" aria-hidden="true" (click)="openImage(terrain)"></i>
+                                            </button>
+                                          </div>
+
                                         </div>
+                                      <div class="item-row action-btn" (click)="deleteFromLibrary(terrain.key)">
+                                        <button>Delete</button>
+                                      </div>
                                     </div>
+                                  </div>
                                 </section>
                                 <div id="modalThree" class="modal">
                                     <div id="content" class="modal-content">
@@ -105,7 +101,7 @@
                                 <section class="new-generations-accordion">
                                     <div class="panel-group" id="accordion">
 
-                                        <div class="panel panel-default" *ngFor="let obj of receivedData?.reverse(); let i=i ndex">
+                                        <div class="panel panel-default" *ngFor="let obj of receivedData?.reverse(); let i = index">
                                             <a (click)="isOpenAccord()" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ i + 1 }}">
                                                 <div class="panel-heading">
                                                     <h4 class="panel-title">
@@ -157,25 +153,22 @@
 </div>
 <div class="modal-unity" id="unity">
     <div class="modal-content">
-        <div class="leftview">
+        <div class="leftview col-xs-3">
             <div id="leftView1">
-                <!-- Viewing controls
                 <br><br> mouse left click and drag - rotate terrain
                 <br> mouse right click and drag - rotate viewing angle
                 <br><br> enter - switch viewing modes
-                <br> esc - to close 3D terrain viewer -->
+                <br> esc - to close 3D terrain viewer
             </div>
             <div id="leftView2">
-                <!-- Viewing controls
                 <br><br> mouse move - rotate viewing angle
                 <br><br> enter - switch viewing mode
-                <br> esc - to close 3D terrain viewer -->
+                <br> esc - to close 3D terrain viewer
             </div>
         </div>
-        <div class="webGL-window" id="gameContainer"></div>
-        <div class="rightview">
+        <div class="col-xs-6" id="gameContainer"></div>
+        <div class="rightview col-xs-3">
             <div id="rightView1">
-                <!-- Movement controls
                 <br><br> W / up arrow - front
                 <br> S / down arrow - back
                 <br> A / left arrow - left
@@ -183,17 +176,20 @@
                 <br> Q - up
                 <br> E - down
                 <br> + shift - accelerate
-            </div> -->
+            </div>
                 <div id="rightView2">
-                    <!-- Movement controls
                 <br><br>
                 <br> W / up arrow - front
                 <br> S / down arrow - back
                 <br> A / left arrow - left
                 <br> D / right arrow - right
                 <br> space - jump
-                <br> + shift - accelerate -->
+                <br> + shift - accelerate
                 </div>
             </div>
-        </div>
     </div>
+  </div>
+<div class="blockUI blockOverlay" *ngIf="!unityLoaded"></div>
+<div class="blockUILoader" *ngIf="!unityLoaded">
+  <img src="assets/images/loading.gif" alt="">
+</div>
